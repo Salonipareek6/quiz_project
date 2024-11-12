@@ -15,7 +15,7 @@ word_categories = {
     "Vehicles": ["car", "bus", "bicycle", "motorcycle", "train", "airplane", "ship", "helicopter", "scooter", "truck"]
 }
 
-image_folder = "path_to_images"  # Update with your images folder path
+image_folder = "./images"  # Update with your images folder path
 
 # Initialize or reset session states
 if 'word' not in st.session_state:
