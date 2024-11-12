@@ -40,8 +40,8 @@ word_categories = {
     ]
 }
 
-# Path for images
-image_folder = "./images"  # Modify this with your image folder path
+# Path for images (adjust this with your actual path)
+image_folder = "path/to/your/images/folder"  # Modify this with your image folder path
 
 # Initialize the session state variables
 if 'turns' not in st.session_state:
