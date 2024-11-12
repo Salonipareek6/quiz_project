@@ -65,8 +65,8 @@ def start_game():
         st.session_state.turns = 5
         st.session_state.guesses = ""
 
-        # Display the word to guess
-        st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
+        # Display the word to guess with valid height
+        st.text_area("Word to guess:", value=st.session_state.displayed_word, height=100)
 
         # Display guessed letters
         st.text("Guessed letters: " + ", ".join(st.session_state.guesses))
@@ -122,7 +122,7 @@ def update_displayed_word():
     if 'word' in st.session_state and 'guesses' in st.session_state:
         displayed_word = " ".join([char if char in st.session_state.guesses else "_" for char in st.session_state.word])
         st.session_state.displayed_word = displayed_word
-        st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
+        st.text_area("Word to guess:", value=st.session_state.displayed_word, height=100)
 
 # Reset game
 def reset_game():
