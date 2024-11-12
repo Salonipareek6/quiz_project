@@ -67,9 +67,13 @@ def start_game():
         st.session_state.turns = 5
         st.session_state.guesses = ""
 
+        # Display the word to guess
         st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
+
+        # Display guessed letters
         st.text("Guessed letters: " + ", ".join(st.session_state.guesses))
 
+        # Show hint image for 4 seconds
         show_image_hint(st.session_state.word)
 
 # Function to show the hint image for 4 seconds
@@ -93,32 +97,39 @@ def show_image_hint(word):
 
 # Function to make a guess
 def make_guess():
-    guess = st.text_input("Enter your guess:", max_chars=1)
-    if guess and len(guess) == 1 and guess.isalpha():
-        if guess in st.session_state.guesses:
-            st.warning("You already guessed that letter!")
-        else:
-            st.session_state.guesses += guess
-            if guess not in st.session_state.word:
-                st.session_state.turns -= 1
-                st.warning(f"Wrong guess! Turns left: {st.session_state.turns}")
+    # Check if the game has started
+    if st.session_state.word != "":
+        guess = st.text_input("Enter your guess:", max_chars=1)
+        if guess and len(guess) == 1 and guess.isalpha():
+            if guess in st.session_state.guesses:
+                st.warning("You already guessed that letter!")
             else:
+                st.session_state.guesses += guess
+                if guess not in st.session_state.word:
+                    st.session_state.turns -= 1
+                    st.warning(f"Wrong guess! Turns left: {st.session_state.turns}")
+                else:
+                    update_displayed_word()
+
+                # Update displayed word
                 update_displayed_word()
 
-            # Update displayed word
-            update_displayed_word()
+                if st.session_state.turns == 0:
+                    st.error(f"You lost! The word was '{st.session_state.word}'.")
+                    reset_game()
 
-            if st.session_state.turns == 0:
-                st.error(f"You lost! The word was '{st.session_state.word}'.")
-                st.session_state.turns = 5
-                st.session_state.displayed_word = ""
-                st.session_state.guesses = ""
-                st.session_state.word = ""
-
+# Function to update the displayed word
 def update_displayed_word():
     displayed_word = " ".join([char if char in st.session_state.guesses else "_" for char in st.session_state.word])
     st.session_state.displayed_word = displayed_word
     st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
+
+# Reset game
+def reset_game():
+    st.session_state.turns = 5
+    st.session_state.guesses = ""
+    st.session_state.word = ""
+    st.session_state.displayed_word = ""
 
 # Main section for running the Streamlit app
 if __name__ == "__main__":
