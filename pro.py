@@ -41,7 +41,7 @@ word_categories = {
 }
 
 # Path for images
-image_folder = "path/to/your/images/folder"  # Modify this with your image folder path
+image_folder = "./images"  # Modify this with your image folder path
 
 # Initialize the session state variables
 if 'turns' not in st.session_state:
@@ -97,8 +97,8 @@ def show_image_hint(word):
 
 # Function to make a guess
 def make_guess():
-    # Check if the game has started
-    if st.session_state.word != "":
+    # Check if the game has started and session state is initialized
+    if st.session_state.word != "" and st.session_state.turns > 0:
         guess = st.text_input("Enter your guess:", max_chars=1)
         if guess and len(guess) == 1 and guess.isalpha():
             if guess in st.session_state.guesses:
@@ -120,9 +120,10 @@ def make_guess():
 
 # Function to update the displayed word
 def update_displayed_word():
-    displayed_word = " ".join([char if char in st.session_state.guesses else "_" for char in st.session_state.word])
-    st.session_state.displayed_word = displayed_word
-    st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
+    if 'word' in st.session_state and 'guesses' in st.session_state:
+        displayed_word = " ".join([char if char in st.session_state.guesses else "_" for char in st.session_state.word])
+        st.session_state.displayed_word = displayed_word
+        st.text_area("Word to guess:", value=st.session_state.displayed_word, height=50)
 
 # Reset game
 def reset_game():
