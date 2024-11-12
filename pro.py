@@ -41,7 +41,7 @@ word_categories = {
 }
 
 # Path for images
-image_folder = "./images"  # Modify this with your image folder path
+image_folder = "path/to/your/images/folder"  # Modify this with your image folder path
 
 # Initialize the session state variables
 if 'turns' not in st.session_state:
@@ -78,9 +78,14 @@ def show_image_hint(word):
         image_path = os.path.join(image_folder, f"{word}.jpg")
         if os.path.exists(image_path):
             img = Image.open(image_path)
+            # Display the image
             st.image(img, caption="Hint Image", use_column_width=True)
-            time.sleep(4)  # Wait for 4 seconds
-            st.empty()  # Clear the image after 4 seconds
+
+            # Wait for 4 seconds before clearing the image
+            time.sleep(4)
+
+            # Clear the image after 4 seconds
+            st.empty()
         else:
             st.warning(f"No image found for the word '{word}'")
     except Exception as e:
