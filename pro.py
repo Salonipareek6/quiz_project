@@ -43,7 +43,7 @@ word_categories = {
 # Path for images (adjust this with your actual path)
 image_folder = "./images"  # Update to your images directory (relative or full path)
 
-# Initialize the session state variables
+# Initialize session state variables
 if 'turns' not in st.session_state:
     st.session_state.turns = 5
 if 'guesses' not in st.session_state:
@@ -57,10 +57,7 @@ if 'name' not in st.session_state:
 
 # Function to start the game
 def start_game():
-    if 'name' not in st.session_state:
-        st.session_state.name = st.text_input("Enter your name:")
-
-    if st.button("Start Game") and st.session_state.name:
+    if st.session_state.name:
         # Select random word from chosen category
         category = st.selectbox("Choose a category:", list(word_categories.keys()))
         st.session_state.word = random.choice(word_categories[category])
@@ -76,6 +73,8 @@ def start_game():
 
         # Show hint image for 4 seconds
         show_image_hint(st.session_state.word)
+    else:
+        st.warning("Please enter your name to start the game.")
 
 # Function to show the hint image for 4 seconds
 def show_image_hint(word):
@@ -135,5 +134,13 @@ def reset_game():
 # Main section for running the Streamlit app
 if __name__ == "__main__":
     st.title("Word Guessing Game")
-    start_game()
-    make_guess()
+    
+    # First, ask for the name
+    if 'name' not in st.session_state or not st.session_state.name:
+        st.session_state.name = st.text_input("Enter your name:")
+    
+    if st.session_state.name:
+        # Now show the "Start Game" button only after the name is entered
+        if st.button("Start Game"):
+            start_game()
+            make_guess()
